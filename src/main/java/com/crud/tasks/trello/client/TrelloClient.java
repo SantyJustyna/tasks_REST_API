@@ -9,12 +9,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.*;
-
-
 @Component
 @RequiredArgsConstructor
 public class TrelloClient {
-
     private final RestTemplate restTemplate;
 
     @Value("${trello.api.endpoint.prod}")
@@ -31,6 +28,7 @@ public class TrelloClient {
                 .queryParam("key", trelloAppKey)
                 .queryParam("token", trelloToken)
                 .queryParam("fields", "name,id")
+                .queryParam("lists", "all")
                 .build()
                 .encode()
                 .toUri();
@@ -39,12 +37,7 @@ public class TrelloClient {
 
         return Optional.ofNullable(boardsResponse)
                 .map(Arrays::asList)
-                .orElse(Collections.emptyList())
-                .stream()
-                .filter(n-> Objects.nonNull(n.getId()) && Objects.nonNull(n.getName()))
-                .filter(m->m.getName().contains("Kodilla"))
-                .toList();
-
+                .orElse(Collections.emptyList());
     }
 
     private URI buildUrl() {
@@ -59,3 +52,4 @@ public class TrelloClient {
 
     }
 }
+
