@@ -26,17 +26,13 @@ class SimpleEmailServiceTest {
     @Test
     public void shouldSendEmail() {
         //Given
-        Mail mail = Mail.builder()
-                .mailTo("test@test.com")
-                .subject("Test")
-                .message("Test message")
-                .build();
+        Mail mail = new Mail("test@test.com", "Test", "Test message");
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
-        ofNullable(mail.getToCc()).ifPresent(message -> mailMessage.setCc());
+        //ofNullable(mail.getToCc()).ifPresent(message -> mailMessage.setCc());
 
         //When
         simpleEmailService.send(mail);
